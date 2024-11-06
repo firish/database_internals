@@ -10,3 +10,7 @@ Transaction Manager
 Logging and Recovery System
 Buffer Manager
 Storage Engine
+
+
+CMU goldmine
+https://www.youtube.com/watch?v=LWS8LEQAUVc
