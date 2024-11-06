@@ -94,16 +94,46 @@ No Foreign Key Constraints: Does not enforce referential integrity.
 5. When Is the Use Case for Using This?
 Use Cases: Suitable for read-heavy applications where data does not change often and transactions are not critical, such as reporting systems, data warehousing, or simple web applications.
 
-### RocksDB
+
+### LevelDB
+1. When Was It Made?
+Year: 2011
+Developer: Google
+
+3. Which Real-World DBMS Use It?
+DBMS: Used as an embedded database in applications like Bitcoin Core, Google Chrome, and Ethereum clients.
+
+3. What Is the Idea Behind It?
+LevelDB is a fast key-value storage library that provides an ordered mapping from keys to values. It's designed for high performance and low latency, using a log-structured merge-tree (LSM tree) data structure.
+
+6. Biggest Strengths and Biggest Weaknesses
+Strengths:
+
+High Performance: Efficient read/write operations.
+Lightweight: Minimal overhead, suitable for embedding.
+Simple API: Easy integration into various applications.
+Weaknesses:
+
+Limited Features: No support for SQL queries, transactions, or concurrent access by multiple processes.
+Single-Process Access: Not designed for multi-process or networked environments.
+No Built-In Replication: Lacks features for data replication or distribution.
+5. When Is the Use Case for Using This?
+Use Cases: Ideal for embedded systems, desktop applications, or components within larger systems where a simple, fast key-value store is needed without the complexity of a full-fledged database server.
+
+### RocksDB (imp)
 1. When Was It Made?
 Year: 2013
 Developer: Facebook
-2. Which Real-World DBMS Use It?
-DBMS: MyRocks (MySQL variant), CockroachDB, Apache Kafka Streams
-3. What Is the Idea Behind It?
-RocksDB is an embeddable, high-performance key-value store designed for fast storage environments like SSDs. It builds upon LevelDB but adds improvements for performance and scalability. The idea is to handle workloads requiring high write throughput and low latency.
 
-4. Biggest Strengths and Biggest Weaknesses
+2. Which Real-World DBMS Use It?
+DBMS: MyRocks (MySQL variant), CockroachDB (imp), Apache Kafka Streams (imp)
+
+3. What Is the Idea Behind It?
+RocksDB is an embeddable, high-performance key-value store designed for fast storage environments like SSDs.
+It builds upon LevelDB but adds improvements for performance and scalability.
+The idea is to handle workloads requiring high write throughput and low latency.
+
+5. Biggest Strengths and Biggest Weaknesses
 Strengths:
 
 High Write Performance: Optimized for write-heavy workloads.
@@ -225,38 +255,18 @@ Compatibility Issues: May not support all features or latest versions of MySQL/M
 Complex Tuning: Requires specialized knowledge to optimize settings.
 5. When Is the Use Case for Using This?
 Use Cases: Suitable for applications handling big data and high write loads, like logging systems, data warehousing, and analytics platforms where storage efficiency and write performance are critical.
-LevelDB
-1. When Was It Made?
-Year: 2011
-Developer: Google
-2. Which Real-World DBMS Use It?
-DBMS: Used as an embedded database in applications like Bitcoin Core, Google Chrome, and Ethereum clients.
-3. What Is the Idea Behind It?
-LevelDB is a fast key-value storage library that provides an ordered mapping from keys to values. It's designed for high performance and low latency, using a log-structured merge-tree (LSM tree) data structure.
 
-4. Biggest Strengths and Biggest Weaknesses
-Strengths:
-
-High Performance: Efficient read/write operations.
-Lightweight: Minimal overhead, suitable for embedding.
-Simple API: Easy integration into various applications.
-Weaknesses:
-
-Limited Features: No support for SQL queries, transactions, or concurrent access by multiple processes.
-Single-Process Access: Not designed for multi-process or networked environments.
-No Built-In Replication: Lacks features for data replication or distribution.
-5. When Is the Use Case for Using This?
-Use Cases: Ideal for embedded systems, desktop applications, or components within larger systems where a simple, fast key-value store is needed without the complexity of a full-fledged database server.
 Berkeley DB
 1. When Was It Made?
 Year: 1991
 Developer: Sleepycat Software (acquired by Oracle Corporation in 2006)
-2. Which Real-World DBMS Use It?
+
+3. Which Real-World DBMS Use It?
 DBMS: Embedded within various applications and systems, including early versions of OpenLDAP and Subversion.
-3. What Is the Idea Behind It?
+4. What Is the Idea Behind It?
 Berkeley DB is an embedded database library that provides scalable, high-performance data management services to applications. It offers multiple data storage models, including key-value and relational-like tables, and supports transactions and concurrency.
 
-4. Biggest Strengths and Biggest Weaknesses
+5. Biggest Strengths and Biggest Weaknesses
 Strengths:
 
 High Performance: Efficient storage and retrieval.
