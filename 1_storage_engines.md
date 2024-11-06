@@ -16,3 +16,15 @@ Choosing the right storage engine is crucial because it affects:
 - Scalability: How well the database handles increasing amounts of data.
 - Functionality: Features like full-text search, geospatial indexing, and replication.
 
+
+### Key Considerations When Choosing a Storage Engine
+- Transaction Support: Do you need ACID-compliant transactions?
+- Concurrency Control: How does the engine handle multiple simultaneous operations?
+- Distributed features: For distributed systems, whats the most important? Consistency, Availability, or Partial Tolerance (CAP)? 
+- Data Volume: Can it efficiently handle your expected data size? (account for scalability requirements as well)
+- Read/Write Patterns: Is your application read-heavy, write-heavy, or balanced?
+- Data Durability: Is data persistence critical, or can you afford data loss in certain scenarios?
+- Feature Set: Do you need full-text search, geospatial indexing, or other specialized features?
+
+### Most Important Storage engines
+
