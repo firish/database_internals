@@ -14,3 +14,6 @@ Storage Engine
 
 CMU goldmine
 https://www.youtube.com/watch?v=LWS8LEQAUVc
+
+
+Index goldmine: https://use-the-index-luke.com/
