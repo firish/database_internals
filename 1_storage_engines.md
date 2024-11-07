@@ -100,25 +100,34 @@ Use Cases: Suitable for read-heavy applications where data does not change often
 Year: 2011
 Developer: Google
 
-3. Which Real-World DBMS Use It?
-DBMS: Used as an embedded database in applications like Bitcoin Core, Google Chrome, and Ethereum clients.
+2. Which Real-World DBMS Use It?
+Used as an embedded database in applications like Bitcoin Core, Google Chrome, and Ethereum clients.
+
+embedded database: An embedded database is a database system that is built into and runs within the same process as an application, rather than operating as a separate, standalone database server. This means the database functions are directly integrated into the application software, allowing for efficient data management without the need for external database configurations or network communication.
 
 3. What Is the Idea Behind It?
-LevelDB is a fast key-value storage library that provides an ordered mapping from keys to values. It's designed for high performance and low latency, using a log-structured merge-tree (LSM tree) data structure.
+LevelDB is a fast "key-value" storage library that provides an "ordered" mapping from keys to values.
+It's designed for high performance and low latency, using a `log-structured merge-tree (LSM tree)` data structure.
 
-6. Biggest Strengths and Biggest Weaknesses
+Note: In LevelDB, write operations are generally faster than read operations due to its underlying Log-Structured Merge Tree (LSM-tree)
+
+5. Biggest Strengths and Biggest Weaknesses
+
 Strengths:
-
 High Performance: Efficient read/write operations.
 Lightweight: Minimal overhead, suitable for embedding.
 Simple API: Easy integration into various applications.
-Weaknesses:
 
-Limited Features: No support for SQL queries, transactions, or concurrent access by multiple processes.
+Weaknesses:
+Limited Querying: No support for SQL queries.
+Limited Features: No Transactions, or concurrent access by multiple processes.
+File Locking: LevelDB is designed for use by a single process at a time. It uses a file lock to prevent multiple processes from accessing the database concurrently.
 Single-Process Access: Not designed for multi-process or networked environments.
 No Built-In Replication: Lacks features for data replication or distribution.
+
 5. When Is the Use Case for Using This?
 Use Cases: Ideal for embedded systems, desktop applications, or components within larger systems where a simple, fast key-value store is needed without the complexity of a full-fledged database server.
+
 
 ### RocksDB (imp)
 1. When Was It Made?
@@ -129,153 +138,195 @@ Developer: Facebook
 DBMS: MyRocks (MySQL variant), CockroachDB (imp), Apache Kafka Streams (imp)
 
 3. What Is the Idea Behind It?
-RocksDB is an embeddable, high-performance key-value store designed for fast storage environments like SSDs.
+RocksDB is an "embeddable", high-performance "key-value store" designed for "fast storage environments like SSDs".
 It builds upon LevelDB but adds improvements for performance and scalability.
 The idea is to handle workloads requiring high write throughput and low latency.
 
-5. Biggest Strengths and Biggest Weaknesses
-Strengths:
+How does RockDB do this?
+-> writes: RocksDB uses WAL "write-ahead-log", batch writes, and asynchronous writes, increasing write efficiency.
+-> reads: Uses Bloom filters more effectively to speed up read operations by reducing disk I/O.
+-> RocksDB enhances LevelDB by introducing multi-threaded operations, advanced compaction strategies, better utilization of modern hardware (like SSDs and multi-core CPUs), and increased configurability. 
 
+IMP:
+By offering these multiple compaction styles, RocksDB allows you to tailor the database's performance characteristics to your application's specific needs. 
+You can optimize for:
+- Write Performance: With Universal or FIFO compaction for write-heavy workloads.
+- Read Performance: With Level compaction for balanced workloads requiring efficient reads.
+
+4. Biggest Strengths and Biggest Weaknesses
+Strengths:
 High Write Performance: Optimized for write-heavy workloads.
 Configurable: Highly tunable for various storage environments.
 Space Efficiency: Supports compression and efficient storage.
-Weaknesses:
 
+Weaknesses:
 Complex Tuning: Requires in-depth knowledge to optimize settings.
 Limited Feature Set: Lacks some relational database features unless integrated into a DBMS.
 Resource Usage: Can be CPU and memory-intensive.
+
 5. When Is the Use Case for Using This?
 Use Cases: Suitable for applications needing high write throughput and low latency, such as real-time analytics, logging systems, and large-scale data ingestion platforms.
-WiredTiger
+
+
+### WiredTiger
 1. When Was It Made?
 Year: 2010
 Developer: WiredTiger Inc. (acquired by MongoDB Inc. in 2014)
+
 2. Which Real-World DBMS Use It?
 DBMS: MongoDB (default since version 3.2)
+
 3. What Is the Idea Behind It?
-WiredTiger was created to provide a modern storage engine with support for document-level concurrency and compression. It aims to improve performance and scalability in MongoDB by efficiently utilizing hardware resources and supporting larger data volumes.
+WiredTiger was created to provide a modern storage engine with support for document-level concurrency and compression.
+It aims to improve performance and scalability in MongoDB by efficiently utilizing hardware resources and supporting larger data volumes.
 
 4. Biggest Strengths and Biggest Weaknesses
-Strengths:
 
+Strengths:
 High Concurrency: Document-level locking increases parallelism.
 Data Compression: Reduces disk space usage.
 Scalability: Better performance with multi-core CPUs.
-Weaknesses:
 
+Weaknesses:
 Complex Configuration: May require tuning for optimal performance.
 Memory Consumption: Can be memory-intensive with large datasets.
 Limited to MongoDB: Not used outside of MongoDB environments.
+
 5. When Is the Use Case for Using This?
 Use Cases: Ideal for MongoDB applications requiring high throughput, efficient storage, and scalability, such as content management systems, IoT platforms, and big data applications.
-Memory (Heap) Engine
+
+
+### Memory (Heap) Engine
 1. When Was It Made?
 Year: Mid-1990s
 Developer: MySQL AB
+
 2. Which Real-World DBMS Use It?
 DBMS: MySQL
+
 3. What Is the Idea Behind It?
-The Memory (Heap) engine is designed to store data in RAM, providing extremely fast data access. It's intended for temporary storage of data where speed is critical and persistence is not required.
+The Memory (Heap) engine is designed to store data in RAM, providing extremely fast data access.
+It's intended for temporary storage of data where speed is critical and persistence is not required.
 
 4. Biggest Strengths and Biggest Weaknesses
-Strengths:
 
+Strengths:
 Ultra-Fast Access: RAM storage allows for rapid data retrieval and manipulation.
 Low Latency: Ideal for applications requiring immediate response times.
-Weaknesses:
 
+Weaknesses:
 Volatile Storage: Data is lost if the server restarts or crashes.
 Size Limitations: Limited by the amount of available RAM.
 No Transaction Support: Does not support ACID transactions.
+
 5. When Is the Use Case for Using This?
 Use Cases: Suitable for caching, session management, temporary tables, and lookup tables where data persistence is not essential.
-Aria
+
+
+### Aria
 1. When Was It Made?
 Year: 2007
 Developer: MariaDB Corporation
+
 2. Which Real-World DBMS Use It?
 DBMS: MariaDB
+
 3. What Is the Idea Behind It?
-Aria was developed as a crash-safe alternative to MyISAM, combining speed with reliability. It aims to serve as a general-purpose storage engine suitable for both transactional and non-transactional applications.
+Aria was developed as a crash-safe alternative to MyISAM, combining speed with reliability.
+It aims to serve as a general-purpose storage engine suitable for both transactional and non-transactional applications.
 
 4. Biggest Strengths and Biggest Weaknesses
-Strengths:
 
+Strengths:
 Crash Recovery: Offers better data safety compared to MyISAM.
 Fast Read Performance: Maintains high-speed data retrieval.
 Versatility: Supports both transactional and non-transactional tables.
-Weaknesses:
 
+Weaknesses:
 Incomplete Transaction Support: Lacks full ACID compliance.
-Less Adoption: Not as widely used or tested as InnoDB.
-Limited Community Support: Smaller user base may mean fewer resources.
+Less Adoption: Not as widely used or tested as InnoDB/MyISAM.
+Limited Community Support: A smaller user base may mean fewer resources.
+
 5. When Is the Use Case for Using This?
 Use Cases: Best for applications needing fast read performance with better reliability than MyISAM but not requiring full transactional support, such as content delivery systems and read-intensive applications.
-NDB Cluster
+
+
+### NDB Cluster
 1. When Was It Made?
 Year: Early 2000s
 Developer: MySQL AB (originally developed by Ericsson)
+
 2. Which Real-World DBMS Use It?
 DBMS: MySQL Cluster (separate product from standard MySQL)
+
 3. What Is the Idea Behind It?
-NDB Cluster is designed for distributed, high-availability environments, providing in-memory storage with data replication across multiple nodes. It aims to deliver real-time performance with no single point of failure.
+NDB Cluster is designed for distributed, high-availability environments, providing in-memory storage with data replication across multiple nodes.
+It aims to deliver real-time performance with no single point of failure.
 
 4. Biggest Strengths and Biggest Weaknesses
-Strengths:
 
+Strengths:
 High Availability: Automatic failover and redundancy.
 Scalability: Can scale horizontally by adding more data nodes.
 Real-Time Performance: Low-latency access suitable for time-sensitive applications.
-Weaknesses:
 
+Weaknesses:
 Complex Setup: Requires expertise to configure and maintain.
 Resource Demanding: Needs significant memory and network resources.
 Limited Feature Support: Not all MySQL features are available or fully supported.
+
 5. When Is the Use Case for Using This?
 Use Cases: Ideal for applications requiring 99.999% uptime, such as telecommunications, online gaming, and other mission-critical systems where data must always be available.
-TokuDB
+
+
+### TokuDB
 1. When Was It Made?
 Year: 2009
 Developer: Tokutek (acquired by Percona in 2015)
+
 2. Which Real-World DBMS Use It?
 DBMS: MariaDB, Percona Server for MySQL
+
 3. What Is the Idea Behind It?
-TokuDB utilizes Fractal Tree indexing to improve write performance and storage efficiency for large datasets. It's designed to handle high insertion rates and large volumes of data without significant performance degradation.
+TokuDB utilizes "Fractal Tree indexing" to improve write performance and storage efficiency for large datasets.
+It's designed to handle high insertion rates and large volumes of data without significant performance degradation.
 
 4. Biggest Strengths and Biggest Weaknesses
 Strengths:
-
 High Insertion Rates: Optimized for fast data ingestion.
 Compression: Significant storage savings through data compression.
 Efficient Indexing: Maintains performance with large indexes.
-Weaknesses:
 
+Weaknesses:
 Discontinued Development: As of 2020, TokuDB is no longer actively developed.
 Compatibility Issues: May not support all features or latest versions of MySQL/MariaDB.
 Complex Tuning: Requires specialized knowledge to optimize settings.
+
 5. When Is the Use Case for Using This?
 Use Cases: Suitable for applications handling big data and high write loads, like logging systems, data warehousing, and analytics platforms where storage efficiency and write performance are critical.
 
-Berkeley DB
+
+### Berkeley DB
 1. When Was It Made?
 Year: 1991
 Developer: Sleepycat Software (acquired by Oracle Corporation in 2006)
 
-3. Which Real-World DBMS Use It?
+2. Which Real-World DBMS Use It?
 DBMS: Embedded within various applications and systems, including early versions of OpenLDAP and Subversion.
-4. What Is the Idea Behind It?
-Berkeley DB is an embedded database library that provides scalable, high-performance data management services to applications. It offers multiple data storage models, including key-value and relational-like tables, and supports transactions and concurrency.
 
-5. Biggest Strengths and Biggest Weaknesses
+3. What Is the Idea Behind It?
+Berkeley DB is an embedded database library that provides scalable, high-performance data management services to applications.
+It offers multiple data storage models, including key-value and relational-like tables, and supports transactions and concurrency.
+
+4. Biggest Strengths and Biggest Weaknesses
 Strengths:
-
 High Performance: Efficient storage and retrieval.
 ACID Transactions: Supports full transactional integrity.
 Versatile APIs: Available for multiple programming languages.
-Weaknesses:
 
+Weaknesses:
 No SQL Interface: Interactions are through APIs, requiring more complex application code.
 Complex Configuration: Can be challenging to configure and optimize.
-Licensing: Dual-license model may impose restrictions on proprietary use.
+
 5. When Is the Use Case for Using This?
 Use Cases: Suitable for applications needing an embedded, high-performance database with transactional support, such as mobile apps, embedded systems, or applications where a full database server is impractical.
